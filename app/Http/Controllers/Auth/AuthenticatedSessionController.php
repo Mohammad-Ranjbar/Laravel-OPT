@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Mail\OTPMail;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -28,6 +30,9 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request)
     {
+
+        Mail::send(new OTPMail());
+
         $request->authenticate();
 
         $request->session()->regenerate();
