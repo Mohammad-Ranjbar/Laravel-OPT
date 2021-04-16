@@ -1,12 +1,12 @@
 @component('mail::message')
-# Introduction
+# کد فعال سازی شما
 
-The body of your message.
+کد شما: {{$opt}}
 
 @component('mail::button', ['url' => ''])
-Button Text
+برای ورود کلیک کنید
 @endcomponent
 
 Thanks,<br>
-{{ config('app.name') }}
+محمد جواد رنجبر | ادمین سایت
 @endcomponent

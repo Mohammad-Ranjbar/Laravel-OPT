@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
@@ -26,4 +27,25 @@ class EmailTest extends TestCase
         Mail::assertSent(OTPMail::class);
 
     }
+
+    /** @test */
+    public function an_opt_email_is_not_send_when_credentials_is_incorrect()
+    {
+        Mail::fake();
+        $user = User::factory()->create();
+        $res = $this->post('/login', ['email' => $user->email, 'password' => '233232']);
+        Mail::assertNotSent(OTPMail::class);
+
+    }
+
+
+    /** @test */
+    public function an_opt_email_is_not_send_when_credentials_is_correct_in_cache()
+    {
+
+        $user = User::factory()->create();
+        $res = $this->post('/login', ['email' => $user->email, 'password' => 'secret']);
+        $this->assertNotNull(Cache::get('OTP'));
+    }
+
 }

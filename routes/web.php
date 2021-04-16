@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::post('/verifiedOTP',[\App\Http\Controllers\OTPController::class , 'verify']);
+
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

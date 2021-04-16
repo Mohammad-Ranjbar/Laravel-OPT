@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Mail\OTPMail;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Mail;
 
 class User extends Authenticatable
 {
@@ -20,6 +23,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'isVerified'
     ];
 
     /**
@@ -40,4 +44,23 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function OTP()
+    {
+        return Cache::get('opt');
+    }
+
+    public function cacheTheOTP()
+    {
+        $otp = rand(1000, 9000);
+        Cache::put(['OTP' => $otp], now()->addSecond(20));
+        return $otp;
+    }
+
+    public function sendOTP()
+    {
+        Mail::to($this->email)->send(new OTPMail($this->cacheTheOTP()));
+    }
+
 }
