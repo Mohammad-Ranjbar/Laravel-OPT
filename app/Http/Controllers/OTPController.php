@@ -8,13 +8,21 @@ use Illuminate\Support\Facades\Cache;
 
 class OTPController extends Controller
 {
+
+    public function showVerifyForm()
+    {
+        return view('form-Verify');
+    }
+
     public function verify(Request $request)
     {
-
-        if ($request->OTP === Cache::get('OTP')) {
+     
+        $otp = intval($request->otp);
+        if ($otp === Cache::get('OTP')) {
             auth()->user()->update(['isVerified' => true]);
-            return response(null, 201);
+            return redirect(route('dashboard'), 201);
         }
+
 
     }
 }

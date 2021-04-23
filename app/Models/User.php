@@ -54,13 +54,19 @@ class User extends Authenticatable
     public function cacheTheOTP()
     {
         $otp = rand(1000, 9000);
-        Cache::put(['OTP' => $otp], now()->addSecond(20));
+        Cache::put(['OTP' => $otp], 15);
         return $otp;
     }
 
-    public function sendOTP()
+    public function sendOTP($via)
     {
-        Mail::to($this->email)->send(new OTPMail($this->cacheTheOTP()));
+        if ($via === 'via_sms') {
+            dd('send sms ');
+            //.....
+        } else {
+            Mail::to($this->email)->send(new OTPMail($this->cacheTheOTP()));
+        }
+
     }
 
 }

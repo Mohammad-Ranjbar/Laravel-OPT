@@ -25,4 +25,12 @@ class VerifyOTPTest extends TestCase
         $this->assertDatabaseHas('users', ['isVerified' => 1]);
 
     }
+
+    /** @test */
+    public function user_can_see_otp_page_for_verify()
+    {
+        $this->logInUser();
+        $this->get('/verifyOTP')->assertStatus(200);
+
+    }
 }

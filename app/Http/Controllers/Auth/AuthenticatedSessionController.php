@@ -32,9 +32,8 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request)
     {
 
-
         $result = $request->authenticate();
-        if ($request) {
+        if (\auth()->check()) {
 
             auth()->user()->sendOTP();
 

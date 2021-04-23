@@ -17,13 +17,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/verifiedOTP',[\App\Http\Controllers\OTPController::class , 'verify']);
+Route::post('/verifiedOTP',[\App\Http\Controllers\OTPController::class , 'verify'])->name('verify');
+
+Route::get('/verifyOTP',[\App\Http\Controllers\OTPController::class,'showVerifyForm']);
 
 
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->middleware(['auth','TwoFa'])->name('dashboard');
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth','TwoFa'])->name('dashboard');
 
 require __DIR__.'/auth.php';
