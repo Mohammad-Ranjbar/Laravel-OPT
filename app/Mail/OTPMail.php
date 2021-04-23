@@ -11,15 +11,18 @@ class OTPMail extends Mailable
 {
     use Queueable, SerializesModels;
     public $opt ;
+    public $email ;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($opt)
+    public function __construct($opt,$email)
     {
         $this->opt = $opt;
+        $this->email = $email;
+
     }
 
     /**
@@ -29,6 +32,8 @@ class OTPMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('OTP')->with(['opt' => $this->opt]);
+        return $this->markdown('OTP')
+            ->to($this->email)
+            ->with(['opt' => $this->opt]);
     }
 }

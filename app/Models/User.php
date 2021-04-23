@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Mail\OTPMail;
+use App\Notifications\OTPNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,13 +59,15 @@ class User extends Authenticatable
         return $otp;
     }
 
-    public function sendOTP($via)
+    public function sendOTP($via = 'email')
     {
+        $OTP = $this->cacheTheOTP();
         if ($via === 'via_sms') {
             dd('send sms ');
             //.....
         } else {
-            Mail::to($this->email)->send(new OTPMail($this->cacheTheOTP()));
+            $email = $this->email;
+            $this->notify((new OTPNotification($via, $OTP, $email))->delay(5));
         }
 
     }
