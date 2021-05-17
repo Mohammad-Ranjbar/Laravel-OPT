@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::post('/post-data',function (\Illuminate\Http\Request $request){
+    dd($request->all());
+})->name('post-data');
+Route::post('/post-data-ajax',function (\Illuminate\Http\Request $request){
+    dd($request->all());
+})->name('post-data-ajax');
 
 Route::post('/verifiedOTP',[\App\Http\Controllers\OTPController::class , 'verify'])->name('verify');
 
